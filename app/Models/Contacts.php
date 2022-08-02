@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contacts extends Model
 {
-   // use HasFactory;
-
+   use HasFactory;
+   // define protected columns to avoid error when isnerting data using create() method
+   protected $fillable = ['first_name','last_name','phone','email','address'];
    //define inverse relationship method
    public function company()
    {
-    return $this->belongsTo(Company::class);
-    //omit second argument(ex: Company::class,'company_id')
+
+      return $this->belongsTo(Company::class);
+      //omit second argument(ex: Company::class,'company_id')
    }
 }
 

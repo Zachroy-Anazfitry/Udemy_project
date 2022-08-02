@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactsRequest;
 use App\Http\Requests\UpdateContactsRequest;
 use App\Models\Contacts;
+use App\Models\Company;
+
 
 class ContactsController extends Controller
 {
@@ -16,6 +18,12 @@ class ContactsController extends Controller
     public function index()
     {
         //
+        // $companies = Company::orderBy(‘name’)->pluck(‘name’, ‘id’);
+        $companies = Company::get();
+        $contacts = Contacts::paginate(10);
+        //$contacts = Contacts::orderBy(‘first_name’, ‘asc’)->get();
+
+        return view('contacts.index', compact('contacts','companies'));
     }
 
     /**
@@ -25,7 +33,10 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        //
+        //paste same code from index() method
+        $companies = Company::get();
+        return view('contacts.create',compact('companies'));
+
     }
 
     /**
@@ -48,6 +59,16 @@ class ContactsController extends Controller
     public function show(Contacts $contacts)
     {
         //
+        $request->validate([
+            'first_name'=> 'required',
+            'last_name'=> 'required',
+            'email'=> 'required|email',
+            'address'=> 'required',
+            'company_id'=> 'required|exists:companies,id',
+
+        ]);
+        
+        dd($request->all());
     }
 
     /**

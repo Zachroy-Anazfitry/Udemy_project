@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,34 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+//creating own route
+// Route::get('contacts', function () {
+//     return ('<h1>All Contacts </h1>');
+// });
+
+// Route::get('contacts/create', function () {
+//     return ('<h1>Add New Contacts </h1>');
+// });
+
+//rendering blade template
+// Route::get('/contacts', function () {
+//     return view('contacts.index');
+// });
+
+// Route::get('/contacts/create', function () {
+//      return view('contacts.create');
+// });
+
+//when code written in ContactsController, routes will define differently compared to above
+// this is CRUD route, use resource
+Route::resource('/contacts', ContactsController::class);
+// Route::post('/contacts', ContactsController::class);
+
+// Route::get('/contacts/create', [ContactsController::class, 'create'])->name('contacts.create');
+
+//linking different pages from homepage view
+Route::get('/contacts/{id}', function ($id) {
+    return App\Models\Contacts::find($id);
 });
